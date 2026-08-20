@@ -1,17 +1,4 @@
-# Privacy policy is live at https://janisxyz.github.io/esp-flasher/
-# via the user site janisxyz/janisxyz.github.io (folder esp-flasher/).
-#
-# Project Pages on this repo cannot be created with the grok-by-xai GitHub App
-# (no `pages` permission) or GITHUB_TOKEN (no administration:write, so
-# actions/configure-pages enablement:true returns 403).
-# PiFlash works because Pages was already enabled on that repo.
-#
-# Source of truth: docs/index.html — copy to janisxyz.github.io/esp-flasher/
-# when the policy changes. To switch to project Pages later: Settings → Pages
-# → GitHub Actions (needs a token with pages:write), then restore the deploy
-# job from janisxyz/PiFlash .github/workflows/pages.yml.
-
-name: Privacy policy URL
+name: GitHub Pages
 
 on:
   push:
@@ -21,15 +8,26 @@ on:
       - .github/workflows/pages.yml
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  verify-live-url:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check https://janisxyz.github.io/esp-flasher/
-        run: |
-          set -euo pipefail
-          html=$(curl -fsSL https://janisxyz.github.io/esp-flasher/)
-          echo "$html" | grep -q 'Privacy Policy for ESP Flasher'
-          echo "$html" | grep -q 'espflasher.shizoghost.com'
-          echo "$html" | grep -q 'Leftclick AG'
-          echo "OK https://janisxyz.github.io/esp-flasher/"
+      - uses: actions/checkout@v5
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4
