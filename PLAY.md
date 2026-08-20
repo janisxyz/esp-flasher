@@ -16,26 +16,27 @@ Kotlin/R namespace stays `dev.espflasher.app`. Play only cares about `applicatio
 - Pay the Play one-time registration fee.
 - If this is a personal account created after 13 Nov 2023 you must run a **14-day closed test with at least 12 testers** before production.
 
-## 2. Upload key (once)
+## 2. Upload key (shared with PiFlash)
 
-```bash
-keytool -genkey -v -keystore espflasher-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias espflasher
-base64 -w0 espflasher-upload.jks > espflasher-upload.b64
-```
+Use **one Leftclick upload keystore for every app**. PiFlash already has it.
 
-Add GitHub Actions secrets (never commit the jks):
+Play App Signing keys stay per-app (Google holds those). The **upload** key can be the same JKS / alias / passwords on ESP Flasher, PiFlash, and anything else.
 
-| Secret | Value |
-|--------|--------|
-| `ESPFLASHER_STORE_BASE64` | contents of `espflasher-upload.b64` |
-| `ESPFLASHER_STORE_PASSWORD` | keystore password |
-| `ESPFLASHER_KEY_ALIAS` | `espflasher` |
-| `ESPFLASHER_KEY_PASSWORD` | key password |
-| `PLAY_SERVICE_ACCOUNT_JSON` | Play API service account JSON (same as PiFlash) |
+GitHub cannot read PiFlash’s secrets from this repo. Copy the **same values and the same names**:
 
-Then run workflow **Release AAB** → track `alpha` (closed testing).
+| Secret | Copy from PiFlash |
+|--------|-------------------|
+| `PIFLASH_STORE_BASE64` | same |
+| `PIFLASH_STORE_PASSWORD` | same |
+| `PIFLASH_KEY_ALIAS` | same (`piflash`) |
+| `PIFLASH_KEY_PASSWORD` | same |
+| `PLAY_SERVICE_ACCOUNT_JSON` | same JSON, then invite that service account on **this** Play app too |
 
-In Play Console: Create app → package **`espflasher.shizoghost.com`** → enroll **Play App Signing** → first AAB can come from CI.
+Do **not** generate a second keystore.
+
+Then: Play Console → Create app → package **`espflasher.shizoghost.com`** → enroll Play App Signing → run **Release AAB** (track `alpha`).
+
+In Play Console → Users and permissions, give the existing Play API service account **Release to testing tracks** on ESP Flasher. Wait up to 24 hours if the API 403s.
 
 ## 3. Store listing copy
 

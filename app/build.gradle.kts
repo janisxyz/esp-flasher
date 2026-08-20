@@ -20,12 +20,16 @@ android {
 
     signingConfigs {
         val keystorePath = System.getenv("ESPFLASHER_KEYSTORE")
+            ?: System.getenv("PIFLASH_STORE_FILE")
         if (!keystorePath.isNullOrBlank()) {
             create("release") {
                 storeFile = file(keystorePath)
                 storePassword = System.getenv("ESPFLASHER_STORE_PASSWORD")
+                    ?: System.getenv("PIFLASH_STORE_PASSWORD")
                 keyAlias = System.getenv("ESPFLASHER_KEY_ALIAS")
+                    ?: System.getenv("PIFLASH_KEY_ALIAS")
                 keyPassword = System.getenv("ESPFLASHER_KEY_PASSWORD")
+                    ?: System.getenv("PIFLASH_KEY_PASSWORD")
             }
         }
     }

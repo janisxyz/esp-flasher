@@ -105,29 +105,28 @@ jobs:
 
       - name: Prepare upload keystore
         env:
-          STORE_BASE64: ${{ secrets.ESPFLASHER_STORE_BASE64 || secrets.ESPFLASHER_KEYSTORE_BASE64 }}
-          SECRET_STORE_PASSWORD: ${{ secrets.ESPFLASHER_STORE_PASSWORD }}
-          SECRET_KEY_ALIAS: ${{ secrets.ESPFLASHER_KEY_ALIAS }}
-          SECRET_KEY_PASSWORD: ${{ secrets.ESPFLASHER_KEY_PASSWORD }}
+          STORE_BASE64: ${{ secrets.PIFLASH_STORE_BASE64 || secrets.ESPFLASHER_STORE_BASE64 || secrets.ESPFLASHER_KEYSTORE_BASE64 }}
+          SECRET_STORE_PASSWORD: ${{ secrets.PIFLASH_STORE_PASSWORD || secrets.ESPFLASHER_STORE_PASSWORD }}
+          SECRET_KEY_ALIAS: ${{ secrets.PIFLASH_KEY_ALIAS || secrets.ESPFLASHER_KEY_ALIAS }}
+          SECRET_KEY_PASSWORD: ${{ secrets.PIFLASH_KEY_PASSWORD || secrets.ESPFLASHER_KEY_PASSWORD }}
         run: |
           set -euo pipefail
-          KS="$HOME/espflasher-upload.jks"
-          if [ -n "${STORE_BASE64:-}" ]; then
-            echo "$STORE_BASE64" | base64 -d > "$KS"
-            echo "Using upload keystore secret"
-            echo "ESPFLASHER_STORE_PASSWORD=${SECRET_STORE_PASSWORD}" >> "$GITHUB_ENV"
-            echo "ESPFLASHER_KEY_ALIAS=${SECRET_KEY_ALIAS:-espflasher}" >> "$GITHUB_ENV"
-            echo "ESPFLASHER_KEY_PASSWORD=${SECRET_KEY_PASSWORD}" >> "$GITHUB_ENV"
-          else
-            echo "No upload keystore secret — generating a CI keystore for this run"
-            keytool -genkeypair -noprompt -keystore "$KS" -storepass android -keypass android \
-              -alias espflasher -keyalg RSA -keysize 2048 -validity 10000 \
-              -dname "CN=ESP Flasher CI, OU=Leftclick, O=Leftclick AG, L=Basel, C=CH"
-            echo "ESPFLASHER_STORE_PASSWORD=android" >> "$GITHUB_ENV"
-            echo "ESPFLASHER_KEY_ALIAS=espflasher" >> "$GITHUB_ENV"
-            echo "ESPFLASHER_KEY_PASSWORD=android" >> "$GITHUB_ENV"
+          KS="$HOME/leftclick-upload.jks"
+          if [ -z "${STORE_BASE64:-}" ]; then
+            echo "::error::No upload keystore. Copy PiFlash secrets PIFLASH_STORE_BASE64 / PIFLASH_STORE_PASSWORD / PIFLASH_KEY_ALIAS / PIFLASH_KEY_PASSWORD into this repo (same values — one Leftclick upload key for every app)."
+            exit 1
           fi
+          echo "$STORE_BASE64" | base64 -d > "$KS"
+          echo "Using shared Leftclick / PiFlash upload keystore"
+          echo "ESPFLASHER_STORE_PASSWORD=${SECRET_STORE_PASSWORD}" >> "$GITHUB_ENV"
+          echo "ESPFLASHER_KEY_ALIAS=${SECRET_KEY_ALIAS}" >> "$GITHUB_ENV"
+          echo "ESPFLASHER_KEY_PASSWORD=${SECRET_KEY_PASSWORD}" >> "$GITHUB_ENV"
           echo "ESPFLASHER_KEYSTORE=$KS" >> "$GITHUB_ENV"
+          echo "PIFLASH_STORE_FILE=$KS" >> "$GITHUB_ENV"
+          echo "PIFLASH_STORE_PASSWORD=${SECRET_STORE_PASSWORD}" >> "$GITHUB_ENV"
+          echo "PIFLASH_KEY_ALIAS=${SECRET_KEY_ALIAS}" >> "$GITHUB_ENV"
+          echo "PIFLASH_KEY_PASSWORD=${SECRET_KEY_PASSWORD}" >> "$GITHUB_ENV"
+
 
       - name: Unit tests
         run: ./gradlew --stacktrace testDebugUnitTest
