@@ -1,0 +1,60 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: "tools platform-tools platforms;android-35 build-tools;35.0.0"
+
+      - uses: gradle/actions/wrapper-validation@v4
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Version for this run
+        run: |
+          echo "ESPFLASHER_VERSION_CODE=${{ github.run_number }}" >> "$GITHUB_ENV"
+          echo "ESPFLASHER_VERSION_NAME=1.0.${{ github.run_number }}" >> "$GITHUB_ENV"
+          echo "versionName 1.0.${{ github.run_number }} / versionCode ${{ github.run_number }}"
+
+      - name: Build debug APK
+        run: ./gradlew :app:assembleDebug --stacktrace
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ESPFlasher-debug
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: apk-v1.0-${{ github.run_number }}
+          name: ESP Flasher 1.0.${{ github.run_number }} (debug APK)
+          body: |
+            Debug APK from GitHub Actions (1.0.${{ github.run_number }}).
+            Sideload and allow unknown sources. USB OTG / USB host required.
+            Package: `espflasher.shizoghost.com`
+          files: app/build/outputs/apk/debug/*.apk
+          fail_on_unmatched_files: true
+          generate_release_notes: true

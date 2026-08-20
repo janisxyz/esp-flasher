@@ -48,6 +48,7 @@ If automatic reset fails, hold **BOOT**, reconnect USB, tap **Try again**.
 ./gradlew test
 ```
 
+Debug APK: workflow **Build APK** on every `main` push. Artifact + GitHub Release `apk-v1.0-*`. Signed Play bundles: **Release AAB**.
 ## Architecture
 
 ```
