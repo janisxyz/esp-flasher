@@ -1,6 +1,6 @@
 # Publish ESP Flasher on Google Play
 
-Privacy policy URL (after Pages deploys):
+Privacy policy URL (Play Console):
 
 https://janisxyz.github.io/esp-flasher/
 
@@ -64,11 +64,21 @@ Do **not** round the Play icon. Google applies the mask.
 
 `targetSdk` is **35**. From **31 August 2026** new submissions must target **36**.
 
-## 7. GitHub Pages
+## 7. GitHub Pages (privacy policy)
 
-Repo → Settings → Pages → Source: **GitHub Actions**.
+**Live URL:** https://janisxyz.github.io/esp-flasher/
 
-The **GitHub Pages** workflow publishes `docs/` (the privacy policy is `docs/index.html`).
+That URL is served from the user site [`janisxyz/janisxyz.github.io`](https://github.com/janisxyz/janisxyz.github.io) (`build_type=legacy`, branch `main`, path `/`, folder `esp-flasher/`). HTML matches `docs/index.html` in this repo.
+
+Project Pages on **this** repo cannot be enabled with current credentials:
+
+- `POST /repos/janisxyz/esp-flasher/pages` → 403 `Resource not accessible by integration` (GitHub App `grok-by-xai` has `administration:write` but **no `pages` permission**)
+- `actions/configure-pages` `enablement: true` → same 403 (`GITHUB_TOKEN` has `pages:write` but **no `administration`**)
+- PiFlash works because Pages was already enabled there (`build_type=workflow`)
+
+When the policy changes, copy `docs/index.html` to `esp-flasher/index.html` on the user site.
+
+To switch to project Pages later: repo Settings → Pages → Source **GitHub Actions** (needs a PAT/app with `pages:write`). Then restore the PiFlash deploy workflow.
 
 ## 8. Hook Play Developer API
 
