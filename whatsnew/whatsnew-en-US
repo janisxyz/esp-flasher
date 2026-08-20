@@ -1,0 +1,1 @@
+First Play Store release. Flash ESP8266 and ESP32 (S2 / S3 / C3 / C6 / H2) firmware over USB-OTG, with chip detection, image checks, and optional verify after write.

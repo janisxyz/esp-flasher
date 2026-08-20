@@ -11,3 +11,12 @@
 *.apk
 *.ap_
 *.aab
+*.jks
+*.keystore
+keystore.properties
+play-service-account.json
+/upload-keystore.jks
+fastlane/report.xml
+fastlane/README.md
+vendor/
+.bundle/

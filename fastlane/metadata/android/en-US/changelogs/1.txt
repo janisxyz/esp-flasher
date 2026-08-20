@@ -1,0 +1,4 @@
+First Play Store release.
+• USB-OTG flashing for ESP8266 and ESP32 (S2 / S3 / C3 / C6 / H2)
+• Chip detection, firmware header checks, verify after write
+• Open .bin from Files, Drive, or Share

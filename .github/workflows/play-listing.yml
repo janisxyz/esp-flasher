@@ -1,0 +1,36 @@
+name: Play Store listing
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "fastlane/metadata/**"
+      - "fastlane/Fastfile"
+      - ".github/workflows/play-listing.yml"
+
+jobs:
+  listing:
+    name: Upload metadata and graphics
+    runs-on: ubuntu-latest
+    environment: play
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Install Fastlane
+        run: gem install fastlane --no-document
+
+      - name: Upload listing
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            echo "::error::Missing secret PLAY_SERVICE_ACCOUNT_JSON. See PLAY.md."
+            exit 1
+          fi
+          fastlane android listing

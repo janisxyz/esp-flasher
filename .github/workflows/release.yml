@@ -1,0 +1,125 @@
+name: Publish to Google Play
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      track:
+        description: Play Console track
+        type: choice
+        options: [internal, alpha, beta, production]
+        default: internal
+      status:
+        description: Release status (draft until the store listing is complete)
+        type: choice
+        options: [draft, completed]
+        default: draft
+      version_name:
+        description: Version name override (default = tag without v, or 1.0.0)
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Signed bundle and Play upload
+    runs-on: ubuntu-latest
+    environment: play
+    timeout-minutes: 45
+    env:
+      ESPFLASHER_STORE_PASSWORD: ${{ secrets.ESPFLASHER_STORE_PASSWORD }}
+      ESPFLASHER_KEY_ALIAS: ${{ secrets.ESPFLASHER_KEY_ALIAS }}
+      ESPFLASHER_KEY_PASSWORD: ${{ secrets.ESPFLASHER_KEY_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/wrapper-validation@v4
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Require Play secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ESPFLASHER_KEYSTORE_BASE64 }}
+          PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          missing=0
+          for name in KEYSTORE_BASE64 PLAY_JSON ESPFLASHER_STORE_PASSWORD ESPFLASHER_KEY_ALIAS ESPFLASHER_KEY_PASSWORD; do
+            eval "val=\${$name}"
+            if [ -z "$val" ]; then
+              echo "::error::Missing secret $name. See PLAY.md."
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Decode upload keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ESPFLASHER_KEYSTORE_BASE64 }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          echo "ESPFLASHER_KEYSTORE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
+
+      - name: Compute version
+        id: version
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            NAME="${GITHUB_REF_NAME#v}"
+          elif [ -n "${{ github.event.inputs.version_name }}" ]; then
+            NAME="${{ github.event.inputs.version_name }}"
+            NAME="${NAME#v}"
+          else
+            NAME="$(git describe --tags --abbrev=0 2>/dev/null || true)"
+            NAME="${NAME#v}"
+            NAME="${NAME:-1.0.0}"
+          fi
+          CODE="${GITHUB_RUN_NUMBER}"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "ESPFLASHER_VERSION_NAME=$NAME" >> "$GITHUB_ENV"
+          echo "ESPFLASHER_VERSION_CODE=$CODE" >> "$GITHUB_ENV"
+          echo "Version $NAME ($CODE)"
+
+      - name: Unit tests
+        run: ./gradlew --stacktrace testDebugUnitTest
+
+      - name: Bundle signed release
+        run: ./gradlew --stacktrace bundleRelease
+
+      - name: Upload AAB and mapping
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-${{ steps.version.outputs.name }}-${{ steps.version.outputs.code }}
+          path: |
+            app/build/outputs/bundle/release/app-release.aab
+            app/build/outputs/mapping/release/mapping.txt
+          if-no-files-found: error
+
+      - name: GitHub Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/bundle/release/app-release.aab
+          generate_release_notes: true
+
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: dev.espflasher.app
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          tracks: ${{ github.event.inputs.track || 'internal' }}
+          status: ${{ github.event.inputs.status || 'draft' }}
+          releaseName: ${{ steps.version.outputs.name }}
+          whatsNewDirectory: whatsnew
+          mappingFile: app/build/outputs/mapping/release/mapping.txt
+          changesNotSentForReview: true

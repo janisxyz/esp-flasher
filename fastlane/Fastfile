@@ -1,0 +1,35 @@
+default_platform(:android)
+
+platform :android do
+  desc "Upload store listing metadata, graphics, and screenshots (no AAB)"
+  lane :listing do
+    upload_to_play_store(
+      json_key_data: ENV["PLAY_SERVICE_ACCOUNT_JSON"],
+      package_name: "dev.espflasher.app",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_changelogs: false,
+      skip_upload_metadata: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      changes_not_sent_for_review: true,
+    )
+  end
+
+  desc "Upload a signed AAB to a Play track"
+  lane :upload_aab do |options|
+    upload_to_play_store(
+      json_key_data: ENV["PLAY_SERVICE_ACCOUNT_JSON"],
+      package_name: "dev.espflasher.app",
+      aab: options[:aab] || "app/build/outputs/bundle/release/app-release.aab",
+      track: options[:track] || "internal",
+      release_status: options[:status] || "draft",
+      skip_upload_apk: true,
+      skip_upload_metadata: ENV["SKIP_LISTING"] != "0",
+      skip_upload_images: ENV["SKIP_LISTING"] != "0",
+      skip_upload_screenshots: ENV["SKIP_LISTING"] != "0",
+      mapping: options[:mapping] || "app/build/outputs/mapping/release/mapping.txt",
+      changes_not_sent_for_review: true,
+    )
+  end
+end

@@ -1,0 +1,1 @@
+Flash ESP8266 and ESP32 firmware over USB-OTG from your phone.

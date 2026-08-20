@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0B1118;
+      --card: #141C26;
+      --fg: #E8EEF4;
+      --muted: #8B98A8;
+      --teal: #1EC8B0;
+      --on-teal: #06241F;
+      --success: #3DD68C;
+      --line: rgba(232,238,244,0.10);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: #000;
+      color: var(--fg);
+      font-family: Outfit, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body.phone { width: 1080px; height: 1920px; overflow: hidden; }
+    body.seven { width: 1200px; height: 1920px; overflow: hidden; }
+    body.ten { width: 1600px; height: 2560px; overflow: hidden; }
+
+    .device {
+      width: 100%; height: 100%;
+      background: var(--ink);
+      display: flex; flex-direction: column;
+    }
+    .sb {
+      height: 72px; padding: 0 40px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      font-size: 28px; font-weight: 600; padding-bottom: 12px;
+    }
+    .sb-right { display: flex; gap: 14px; align-items: center; font-size: 24px; letter-spacing: 1px; }
+    .appbar { padding: 8px 40px 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .appbar h1 { font-size: 44px; font-weight: 650; letter-spacing: -0.6px; }
+    .appbar .sub { margin-top: 6px; font-size: 24px; color: var(--muted); font-weight: 450; max-width: 780px; }
+    .gear {
+      width: 72px; height: 72px; border-radius: 36px;
+      display: grid; place-items: center; color: var(--fg);
+    }
+    .content { flex: 1; padding: 8px 36px 0; display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px 34px;
+      box-shadow: 0 1px 0 rgba(232,238,244,0.04), 0 18px 40px rgba(0,0,0,0.28);
+    }
+    .kicker { font-size: 26px; font-weight: 600; margin-bottom: 10px; }
+    .title { font-size: 40px; font-weight: 650; letter-spacing: -0.4px; }
+    .muted { color: var(--muted); font-size: 26px; line-height: 1.35; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .stack { display: flex; flex-direction: column; gap: 10px; }
+    .meta { font-size: 26px; color: var(--fg); }
+    .meta span { color: var(--muted); }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(30,200,176,0.14); color: var(--teal);
+      border-radius: 999px; padding: 8px 16px; font-size: 22px; font-weight: 600;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      border: 0; border-radius: 999px; font-family: inherit; font-weight: 600;
+    }
+    .btn-fill { background: var(--teal); color: var(--on-teal); }
+    .btn-tonal { background: #1A2F2C; color: #C6F6EE; }
+    .btn-outline { background: transparent; color: var(--fg); border: 2px solid var(--line); }
+    .btn-lg { height: 96px; font-size: 32px; width: 100%; }
+    .btn-md { height: 72px; padding: 0 28px; font-size: 26px; }
+    .btn-flash { height: 104px; font-size: 34px; letter-spacing: 1.4px; font-weight: 700; }
+    .btn-flash[disabled] { opacity: 0.38; }
+    .icon-lg { width: 56px; height: 56px; color: var(--teal); }
+    .nav {
+      height: 48px; display: grid; place-items: center; padding-bottom: 18px;
+    }
+    .pill { width: 180px; height: 8px; border-radius: 8px; background: #E8EEF4; opacity: 0.35; }
+
+    .center {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; gap: 18px; padding: 0 48px 40px;
+    }
+    .ring {
+      width: 340px; height: 340px; position: relative;
+    }
+    .ring svg { transform: rotate(-90deg); }
+    .ring .pct {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      font-size: 72px; font-weight: 650;
+    }
+    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 24px; color: var(--muted); }
+    .check {
+      width: 128px; height: 128px; border-radius: 64px;
+      background: rgba(30,200,176,0.14); display: grid; place-items: center; color: var(--teal);
+    }
+    .sw {
+      width: 76px; height: 44px; border-radius: 22px; background: var(--teal); position: relative;
+    }
+    .sw::after {
+      content: ""; position: absolute; width: 36px; height: 36px; border-radius: 18px;
+      background: var(--on-teal); top: 4px; right: 4px;
+    }
+    .sw.off { background: #2A3542; }
+    .sw.off::after { right: auto; left: 4px; background: #C5CDD6; }
+    .seg { display: flex; gap: 12px; flex-wrap: wrap; }
+    .seg span {
+      border-radius: 999px; padding: 12px 22px; font-size: 24px; font-weight: 600;
+      background: #1C2633; color: var(--fg);
+    }
+    .seg span.on { background: var(--teal); color: var(--on-teal); }
+    .back { width: 72px; height: 72px; display: grid; place-items: center; }
+    body.seven .appbar h1, body.ten .appbar h1 { font-size: 52px; }
+    body.ten .content { padding: 16px 64px 0; gap: 28px; }
+    body.ten .card { padding: 40px 44px; }
+    body.ten .title { font-size: 48px; }
+  </style>
+</head>
+<body>
+  <div class="device">
+    <div class="sb">
+      <div>9:41</div>
+      <div class="sb-right">●●●● &nbsp; 5G &nbsp; 84%</div>
+    </div>
+    <div id="root"></div>
+    <div class="nav"><div class="pill"></div></div>
+  </div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const scene = params.get("scene") || "connect";
+    const form = params.get("form") || "phone";
+    document.body.className = form;
+
+    const usb = `<svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 7v4m8-4v4M7 11h10v6a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-6Z"/><path d="M12 4v7"/></svg>`;
+    const cpu = `<svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>`;
+    const gear = `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.7.9 1.2 1.6 1.2H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>`;
+    const back = `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19 8 12l7-7"/></svg>`;
+    const check = `<svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.5 9.5 17 19 7.5"/></svg>`;
+
+    function appbar(sub, settings = true) {
+      return `<div class="appbar">
+        <div><h1>ESP Flasher</h1><div class="sub">${sub}</div></div>
+        ${settings ? `<div class="gear">${gear}</div>` : ""}
+      </div>`;
+    }
+    function settingsBar() {
+      return `<div class="appbar">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="back">${back}</div>
+          <h1>Settings</h1>
+        </div>
+      </div>`;
+    }
+
+    const deviceCardEmpty = `<div class="card stack">
+      ${usb}
+      <div class="title">No device connected</div>
+      <div class="muted">Connect an ESP8266 or ESP32 using USB OTG</div>
+      <div><button class="btn btn-fill btn-md">Connect board</button></div>
+    </div>`;
+
+    const deviceCardLive = `<div class="card">
+      <div class="row" style="margin-bottom:18px">
+        <div class="row" style="justify-content:flex-start;gap:18px">
+          ${cpu}
+          <div>
+            <div class="title">ESP32-S3</div>
+            <div class="chip" style="margin-top:8px">Connected</div>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="meta"><span>Chip</span> &nbsp; ESP32-S3 (QFN-56)</div>
+        <div class="meta"><span>Flash</span> &nbsp; 8 MB</div>
+        <div class="meta"><span>USB</span> &nbsp; Espressif USB-JTAG</div>
+        <div class="meta"><span>Bootloader</span> &nbsp; Ready</div>
+        <div class="meta mono">MAC  74:4D:BD:A1:2C:9E</div>
+      </div>
+    </div>`;
+
+    const fwEmpty = `<div class="card stack">
+      <div class="kicker">Firmware</div>
+      <div class="muted">Select an ESP firmware image</div>
+      <div><button class="btn btn-tonal btn-md">Choose firmware</button></div>
+    </div>`;
+
+    const fwReady = `<div class="card stack">
+      <div class="kicker">Firmware</div>
+      <div style="font-size:30px;font-weight:600">firmware-s3.bin</div>
+      <div class="muted">1248 KB · 0x0</div>
+      <div class="row" style="justify-content:flex-start;gap:12px">
+        <button class="btn btn-tonal btn-md">Change</button>
+        <button class="btn btn-md" style="background:transparent;color:var(--muted)">Remove</button>
+      </div>
+    </div>`;
+
+    const options = `<div class="card stack">
+      <div class="kicker">Flash options</div>
+      <div class="row"><div class="meta">Erase before flashing</div><div class="sw off"></div></div>
+      <div class="row"><div class="meta">Verify after flashing</div><div class="sw"></div></div>
+    </div>`;
+
+    const flashBtn = (on) => `<button class="btn btn-fill btn-flash" ${on ? "" : "disabled"}>FLASH</button>`;
+
+    const homeShell = (inner) => appbar("Flash ESP8266 and ESP32 firmware directly from Android") + `<div class="content">${inner}</div>`;
+
+    const scenes = {
+      connect: homeShell(`${deviceCardEmpty}${fwEmpty}${options}${flashBtn(false)}`),
+      detected: homeShell(`${deviceCardLive}${fwEmpty}${options}${flashBtn(false)}`),
+      ready: homeShell(`${deviceCardLive}${fwReady}${options}${flashBtn(true)}`),
+      flashing: appbar("Flash ESP8266 and ESP32 firmware directly from Android") + `
+        <div class="center">
+          <div class="muted">Flashing ESP32-S3</div>
+          <div class="ring">
+            <svg width="340" height="340" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#1C2633" stroke-width="8"/>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="#1EC8B0" stroke-width="8"
+                stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="173"/>
+            </svg>
+            <div class="pct">47%</div>
+          </div>
+          <div class="title">Writing firmware</div>
+          <div class="mono">612 KB / 1248 KB · 86.4 KB/s</div>
+          <button class="btn btn-outline btn-md" style="margin-top:12px;min-width:220px">Cancel</button>
+        </div>`,
+      success: appbar("Flash ESP8266 and ESP32 firmware directly from Android") + `
+        <div class="center">
+          <div class="check">${check}</div>
+          <div class="title">Flash complete</div>
+          <div class="muted">ESP32-S3 successfully flashed.</div>
+          <div style="font-size:30px;font-weight:600;margin-top:8px">firmware-s3.bin</div>
+          <div class="muted">1248 KB · 14s</div>
+          <div class="chip">Verification passed</div>
+          <button class="btn btn-fill btn-lg" style="margin-top:20px">Flash again</button>
+          <button class="btn btn-tonal btn-lg">Done</button>
+        </div>`,
+      settings: settingsBar() + `
+        <div class="content">
+          <div class="card stack">
+            <div class="kicker">General</div>
+            <div class="meta">Theme</div>
+            <div class="seg"><span>System</span><span>Light</span><span class="on">Dark</span></div>
+            <div class="row"><div class="meta">Keep screen awake during flashing</div><div class="sw"></div></div>
+          </div>
+          <div class="card stack">
+            <div class="kicker">Flashing</div>
+            <div class="row"><div class="meta">Verify after flash</div><div class="sw"></div></div>
+            <div class="row"><div class="meta">Erase before flash</div><div class="sw off"></div></div>
+            <div class="row"><div class="meta">Automatic bootloader entry</div><div class="sw"></div></div>
+          </div>
+        </div>`
+    };
+
+    document.getElementById("root").innerHTML = scenes[scene] || scenes.connect;
+  </script>
+</body>
+</html>

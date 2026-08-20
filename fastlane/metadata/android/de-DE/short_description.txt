@@ -1,0 +1,1 @@
+ESP8266- und ESP32-Firmware per USB-OTG direkt vom Handy flashen.

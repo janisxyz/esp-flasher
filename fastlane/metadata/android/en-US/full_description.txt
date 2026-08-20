@@ -1,0 +1,28 @@
+ESP Flasher writes firmware to ESP8266 and ESP32 boards directly from an Android phone. Plug in a USB-OTG adapter, pick a .bin, and flash. The app speaks the real Espressif ROM bootloader protocol (SLIP + stub-less ROM commands). It is not a timer animation and not a simulator.
+
+Supported chips
+• ESP8266
+• ESP32, ESP32-S2, ESP32-S3
+• ESP32-C3, ESP32-C6, ESP32-H2
+
+USB adapters
+• WCH CH340 / CH341
+• Silicon Labs CP210x
+• FTDI
+• CDC ACM
+• Native USB on ESP32-S2 / S3 / C3 and related chips
+
+What it does
+• Detects the chip and flash size from the ROM bootloader
+• Inspects the firmware header (0xE9 magic and ESP-IDF chip id)
+• Warns if the image does not match the connected chip — you can still flash anyway
+• Writes at the real serial cursor and can verify after write
+• Optional erase-before-flash and automatic bootloader reset (DTR/RTS)
+• Opens .bin files from Files, Downloads, Drive, or Share / Open with
+
+If automatic reset fails, hold BOOT, reconnect USB, and tap Try again.
+
+Privacy
+Flashing happens on the device. Firmware bytes are not uploaded. There is no account, no ads, and no analytics. See the in-listing privacy policy.
+
+Not affiliated with Espressif Systems. ESP8266 and ESP32 are trademarks of their owners.

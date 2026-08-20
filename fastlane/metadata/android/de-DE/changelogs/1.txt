@@ -1,0 +1,4 @@
+Erste Play-Store-Version.
+• USB-OTG-Flash für ESP8266 und ESP32 (S2 / S3 / C3 / C6 / H2)
+• Chip-Erkennung, Firmware-Header-Prüfung, Verifikation
+• .bin aus Dateien, Drive oder „Teilen“ öffnen

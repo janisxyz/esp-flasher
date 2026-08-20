@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1024px; height: 500px; overflow: hidden; background: #0B1118; }
+    body {
+      font-family: Outfit, system-ui, sans-serif;
+      color: #E8EEF4;
+      background:
+        radial-gradient(900px 420px at 8% 110%, rgba(30, 200, 176, 0.22), transparent 55%),
+        radial-gradient(700px 380px at 100% -10%, rgba(30, 200, 176, 0.12), transparent 50%),
+        linear-gradient(180deg, #101821 0%, #0B1118 100%);
+    }
+    .grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(30,200,176,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,200,176,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at 30% 50%, #000 20%, transparent 75%);
+    }
+    .row {
+      position: relative;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      padding: 0 72px 0 64px;
+      gap: 48px;
+    }
+    .mark {
+      width: 220px; height: 220px; flex: 0 0 220px;
+      background: #0B1118;
+      border-radius: 48px;
+      border: 1px solid rgba(30, 200, 176, 0.28);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+      display: grid; place-items: center;
+    }
+    .copy { flex: 1; padding-bottom: 8px; }
+    h1 {
+      font-size: 72px; font-weight: 700; letter-spacing: -1.6px; line-height: 1;
+    }
+    p {
+      margin-top: 16px;
+      font-size: 28px; font-weight: 500; color: #C6F6EE; letter-spacing: -0.2px;
+    }
+    .chips { margin-top: 22px; display: flex; gap: 10px; }
+    .chip {
+      font-size: 15px; font-weight: 600;
+      color: #06241F; background: #1EC8B0;
+      border-radius: 999px; padding: 8px 14px;
+    }
+    .chip.ghost {
+      color: #C6F6EE; background: rgba(30,200,176,0.12);
+      border: 1px solid rgba(30,200,176,0.28);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="row">
+    <div class="mark">
+      <svg width="150" height="150" viewBox="0 0 100 100" aria-hidden="true">
+        <rect x="32" y="26" width="36" height="48" rx="6" fill="#1EC8B0"/>
+        <rect x="18" y="34" width="14" height="8" rx="1.5" fill="#1EC8B0"/>
+        <rect x="18" y="46" width="14" height="8" rx="1.5" fill="#1EC8B0"/>
+        <rect x="18" y="58" width="14" height="8" rx="1.5" fill="#1EC8B0"/>
+        <rect x="68" y="34" width="14" height="8" rx="1.5" fill="#1EC8B0"/>
+        <rect x="68" y="46" width="14" height="8" rx="1.5" fill="#1EC8B0"/>
+        <rect x="68" y="58" width="14" height="8" rx="1.5" fill="#1EC8B0"/>
+      </svg>
+    </div>
+    <div class="copy">
+      <h1>ESP Flasher</h1>
+      <p>Flash ESP8266 & ESP32 from your phone</p>
+      <div class="chips">
+        <span class="chip">USB-OTG</span>
+        <span class="chip ghost">ESP32-S3 / C3 / C6</span>
+        <span class="chip ghost">Verify after write</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
