@@ -1,0 +1,2 @@
+-keep class com.hoho.android.usbserial.** { *; }
+-keep class dev.espflasher.app.** { *; }

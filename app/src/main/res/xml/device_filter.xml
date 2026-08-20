@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CH340 / CH341 -->
+    <usb-device vendor-id="6790" />
+    <!-- Silicon Labs CP210x -->
+    <usb-device vendor-id="4292" />
+    <!-- FTDI -->
+    <usb-device vendor-id="1027" />
+    <!-- Espressif native USB (S2/S3/C3/C6/H2) -->
+    <usb-device vendor-id="12346" />
+    <!-- Prolific -->
+    <usb-device vendor-id="1659" />
+    <!-- CDC ACM class -->
+    <usb-device class="2" subclass="2" protocol="1" />
+</resources>
