@@ -253,6 +253,10 @@ class FlasherViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(theme = theme) }
     }
 
+    fun setKeepAwake(value: Boolean) {
+        _state.update { it.copy(keepAwake = value) }
+    }
+
     private fun setError(error: AppError) {
         _state.update { it.copy(error = error, phase = FlashPhase.Error) }
     }

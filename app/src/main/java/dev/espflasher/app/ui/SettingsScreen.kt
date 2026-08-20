@@ -46,7 +46,7 @@ fun SettingsScreen(vm: FlasherViewModel, onBack: () -> Unit) {
                         }
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                             Text("Keep screen awake during flashing")
-                            Switch(checked = state.keepAwake, onCheckedChange = { v -> vm.updateConfig { it }; /* stored on ui state */ })
+                            Switch(checked = state.keepAwake, onCheckedChange = { vm.setKeepAwake(it) })
                         }
                     }
                 }
