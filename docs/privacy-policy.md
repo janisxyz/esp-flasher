@@ -3,8 +3,8 @@
 **Effective date:** 20 August 2026  
 **App:** ESP Flasher  
 **Package:** `espflasher.shizoghost.com`  
-**Developer:** Leftclick AG  
-**Contact:** [leftclick.ch](https://leftclick.ch)
+**Developer:** Janis Schelling (shizoghost)  
+**Contact:** [shizoghost@exdonuts.com](mailto:shizoghost@exdonuts.com)
 
 Canonical HTML: <https://janisxyz.github.io/esp-flasher/privacy-policy>
 
