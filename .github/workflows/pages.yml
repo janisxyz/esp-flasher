@@ -28,16 +28,13 @@ jobs:
       - name: Stage Pages site
         run: |
           set -euo pipefail
-          mkdir -p site/de/privacy-policy site/privacy-policy site/privacy
+          mkdir -p site/privacy-policy site/privacy
           cp docs/.nojekyll site/
           cp docs/index.html site/index.html
           cp docs/index.html site/404.html
           cp docs/index.html site/privacy-policy.html
           cp docs/index.html site/privacy-policy/index.html
           cp docs/index.html site/privacy/index.html
-          cp docs/de/index.html site/de/index.html
-          cp docs/de/index.html site/de/privacy-policy.html
-          cp docs/de/index.html site/de/privacy-policy/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

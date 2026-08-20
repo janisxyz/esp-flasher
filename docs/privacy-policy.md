@@ -3,13 +3,12 @@
 **Effective date:** 20 August 2026  
 **App:** ESP Flasher  
 **Package:** `espflasher.shizoghost.com`  
-**Controller:** Leftclick AG, Binningerstrasse 95, CH-4123 Allschwil, Switzerland  
-**Contact:** [info@leftclick.ch](mailto:info@leftclick.ch) · [leftclick.ch](https://leftclick.ch)
+**Developer:** Leftclick AG  
+**Contact:** [leftclick.ch](https://leftclick.ch)
 
-Canonical HTML: <https://janisxyz.github.io/esp-flasher/>  
-Deutsch: <https://janisxyz.github.io/esp-flasher/de/>
+Canonical HTML: <https://janisxyz.github.io/esp-flasher/privacy-policy>
 
-ESP Flasher is a local utility. It writes firmware to ESP8266 and ESP32 boards from your phone over USB-OTG.
+ESP Flasher is a local utility. It flashes ESP8266 and ESP32 firmware from your phone to a USB-OTG connected board.
 
 ## Data we collect
 
@@ -18,25 +17,20 @@ ESP Flasher does **not** collect, sell, share, or transmit personal data.
 - No accounts
 - No analytics or crash reporting SDKs
 - No advertising
-- No internet permission in the app
+- No internet permission
 
 ## Data that stays on the device
 
-Firmware `.bin` files you pick are read locally and written to the connected chip. They are not uploaded.
+Firmware `.bin` files you pick are read locally and written to the connected chip. They are not uploaded anywhere.
 
-Theme, verify-after-flash, erase-before-flash, and similar settings are stored in the app’s private preferences on this phone. Android backup is disabled for this app, so settings are not copied to cloud backup. Uninstalling the app deletes them.
+Language, theme, verify-after-flash, erase-before-flash, and similar settings are stored in the app’s private preferences on this phone. Android backup is disabled for this app, so settings are not copied to cloud backup. Uninstalling the app deletes them.
 
-USB serial traffic stays between the phone and the board. Technical logs shown in the app are kept in memory and are not sent anywhere. Credentials are not collected.
+USB serial traffic stays between the phone and the board. Technical logs shown in the app are kept in memory and are not sent anywhere.
 
 ## Permissions
 
-- **USB host** is required to detect and flash boards. The app cannot function without it.
-- **Wake lock** is optional and only used to keep the screen on during a write.
-- Storage access is limited to the firmware file you pick through the system file picker or Share / Open with.
-
-## This policy page
-
-This page is hosted on GitHub Pages. Opening it may send technical data (IP address, user agent, referrer) to GitHub, Inc. We do not run our own analytics, ads, or cookies here. See the [GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
+- **USB host** is required to talk to an ESP board.
+- Storage access is limited to the firmware file you pick through the system file picker.
 
 ## Children
 
@@ -48,13 +42,4 @@ If this policy changes, we will update this page and the date above.
 
 ## Not affiliated
 
-ESP Flasher is an independent tool. It is not affiliated with, endorsed by, or sponsored by Espressif Systems. ESP8266 and ESP32 are trademarks of their owners.
-
-## Contact
-
-Leftclick AG  
-Binningerstrasse 95  
-CH-4123 Allschwil  
-Switzerland  
-info@leftclick.ch  
-https://leftclick.ch
+ESP Flasher is an independent tool. It is not affiliated with, endorsed by, or sponsored by Espressif Systems.
