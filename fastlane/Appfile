@@ -1,2 +1,2 @@
-package_name("dev.espflasher.app")
+package_name("espflasher.shizoghost.com")
 json_key_data(ENV["PLAY_SERVICE_ACCOUNT_JSON"])

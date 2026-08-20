@@ -5,7 +5,7 @@ platform :android do
   lane :listing do
     upload_to_play_store(
       json_key_data: ENV["PLAY_SERVICE_ACCOUNT_JSON"],
-      package_name: "dev.espflasher.app",
+      package_name: "espflasher.shizoghost.com",
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_changelogs: false,
@@ -20,7 +20,7 @@ platform :android do
   lane :upload_aab do |options|
     upload_to_play_store(
       json_key_data: ENV["PLAY_SERVICE_ACCOUNT_JSON"],
-      package_name: "dev.espflasher.app",
+      package_name: "espflasher.shizoghost.com",
       aab: options[:aab] || "app/build/outputs/bundle/release/app-release.aab",
       track: options[:track] || "internal",
       release_status: options[:status] || "draft",

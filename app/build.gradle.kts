@@ -9,7 +9,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "dev.espflasher.app"
+        applicationId = "espflasher.shizoghost.com"
         minSdk = 26
         targetSdk = 35
         versionCode = System.getenv("ESPFLASHER_VERSION_CODE")?.toIntOrNull() ?: 1

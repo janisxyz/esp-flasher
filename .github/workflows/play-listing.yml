@@ -7,10 +7,9 @@ jobs:
   listing:
     name: Upload metadata and graphics
     runs-on: ubuntu-latest
-    environment: play
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: ruby/setup-ruby@v1
         with:

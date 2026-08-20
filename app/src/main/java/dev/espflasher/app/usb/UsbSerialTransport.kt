@@ -39,13 +39,7 @@ class UsbSerialTransport(
 
     override suspend fun write(data: ByteArray) = withContext(Dispatchers.IO) {
         val p = port ?: error("Serial port closed")
-        var offset = 0
-        while (offset < data.size) {
-            val slice = if (offset == 0) data else data.copyOfRange(offset, data.size)
-            val n = p.write(slice, 1000)
-            if (n <= 0) error("USB serial write failed")
-            offset += n
-        }
+        p.write(data, 5_000)
     }
 
     override suspend fun read(max: Int, timeoutMs: Int): ByteArray = withContext(Dispatchers.IO) {

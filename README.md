@@ -6,14 +6,20 @@ Connect board → Detect chip → Select firmware → Flash → Verify → Done
 
 This is a real bootloader implementation (SLIP + Espressif ROM commands). It is **not** a simulator.
 
-Package name: `dev.espflasher.app`
+Package: `espflasher.shizoghost.com`
+
+Step-by-step publish guide: [PLAY.md](PLAY.md)
+
+Privacy policy (GitHub Pages): https://janisxyz.github.io/esp-flasher/
+
+Listing copy lives in `fastlane/metadata/android/en-US/`.
 
 ## Open in Android Studio
 
 1. Install [Android Studio](https://developer.android.com/studio) (Ladybug / 2024.2+).
 2. **File → Open** this folder.
 3. Let Gradle sync.
-4. Plug in a phone with USB debugging, or use an emulator (USB host requires a real device).
+4. Plug in a phone with USB debugging (USB host requires a real device).
 5. Run `app`.
 
 ## Hardware
@@ -42,31 +48,6 @@ If automatic reset fails, hold **BOOT**, reconnect USB, tap **Try again**.
 ./gradlew test
 ```
 
-Covers ESP8266 / ESP32 image validation, chip magic, SLIP, state machine, and error mapping.
-
-## Google Play
-
-CI, listing assets, and the exact Console steps are in **[PLAY.md](PLAY.md)**.
-
-| Workflow | When | What |
-| --- | --- | --- |
-| [Android CI](.github/workflows/ci.yml) | push / PR | unit tests + debug APK |
-| [Publish to Google Play](.github/workflows/release.yml) | tag `v*` or manual | signed AAB → internal track (draft) |
-| [Play Store listing](.github/workflows/play-listing.yml) | metadata change / manual | icon, feature graphic, screenshots, copy |
-| [GitHub Pages](.github/workflows/pages.yml) | `docs/` | privacy policy |
-
-Privacy policy (after Pages is enabled): https://janisxyz.github.io/esp-flasher/privacy.html
-
-### Store assets (already in the repo)
-
-- High-res icon 512×512
-- Feature graphic 1024×500
-- 6 phone screenshots 1080×1920
-- 7-inch and 10-inch tablet screenshots
-- EN + DE listing text
-
-Path: [`fastlane/metadata/android/`](fastlane/metadata/android/)
-
 ## Architecture
 
 ```
@@ -84,11 +65,5 @@ UsbSerialTransport (usb-serial-for-android)
     ↓
 Android USB Host API
 ```
-
-## Protocol notes
-
-- ESP8266 and ESP32 use different `FLASH_BEGIN` layouts and reset defaults.
-- Detection reads `CHIP_DETECT_MAGIC_REG` (`0x40001000`), same as esptool.
-- Firmware headers are inspected (`0xE9` magic + ESP-IDF chip id) so a mismatched image requires an explicit **Flash anyway**.
 
 Not affiliated with Espressif Systems.

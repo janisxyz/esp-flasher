@@ -92,10 +92,10 @@ data class AppError(
         fun fromThrowable(t: Throwable): AppError {
             val m = t.message.orEmpty().lowercase()
             return when {
+                "timeout" in m || "timed out" in m -> of(AppErrorCode.TIMEOUT, t.message)
                 t is SecurityException -> of(AppErrorCode.USB_PERMISSION, t.message)
                 "permission" in m -> of(AppErrorCode.USB_PERMISSION, t.message)
                 "bootloader" in m || "sync" in m || "no serial" in m -> of(AppErrorCode.BOOTLOADER, t.message)
-                "timeout" in m || "timed out" in m -> of(AppErrorCode.TIMEOUT, t.message)
                 "disconnect" in m || "device lost" in m -> of(AppErrorCode.DISCONNECT, t.message)
                 "md5" in m || "verif" in m -> of(AppErrorCode.VERIFICATION, t.message)
                 t is java.util.concurrent.CancellationException -> of(AppErrorCode.CANCELLED)
