@@ -19,6 +19,10 @@ import dev.espflasher.app.domain.FlashProgress
 import dev.espflasher.app.domain.FlashResult
 import dev.espflasher.app.domain.FlashStateMachine
 import dev.espflasher.app.domain.FirmwareInspector
+import dev.espflasher.app.domain.prefs.Accent
+import dev.espflasher.app.domain.prefs.AppPreferences
+import dev.espflasher.app.domain.prefs.AppSettings
+import dev.espflasher.app.domain.prefs.ThemeMode
 import dev.espflasher.app.flash.FlashingRepository
 import dev.espflasher.app.usb.UsbEvent
 import dev.espflasher.app.usb.UsbMonitor
@@ -40,7 +44,9 @@ data class UiState(
     val needBootButton: Boolean = false,
     val mismatchOpen: Boolean = false,
     val config: FlashConfig = FlashConfig(),
-    val theme: String = "system",
+    val languageTag: String = "",
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val accent: Accent = Accent.TEAL,
     val keepAwake: Boolean = true,
     val debugLogging: Boolean = false,
 ) {
@@ -53,7 +59,16 @@ data class UiState(
 class FlasherViewModel(app: Application) : AndroidViewModel(app) {
     private val monitor = UsbMonitor(app)
     private val repo = FlashingRepository()
-    private val _state = MutableStateFlow(UiState())
+    private val prefs = AppPreferences(app)
+    private val _state = MutableStateFlow(UiState().let { loaded ->
+        val s = prefs.load()
+        loaded.copy(
+            languageTag = s.languageTag,
+            themeMode = s.themeMode,
+            accent = s.accent,
+            keepAwake = s.keepAwake,
+        )
+    })
     val state: StateFlow<UiState> = _state
     private var flashJob: Job? = null
     private var pendingDevice: UsbDevice? = null
@@ -249,12 +264,36 @@ class FlasherViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(config = transform(it.config)) }
     }
 
-    fun setTheme(theme: String) {
-        _state.update { it.copy(theme = theme) }
+    fun setLanguage(tag: String) {
+        _state.update { it.copy(languageTag = tag) }
+        persist()
+    }
+
+    fun setThemeMode(mode: ThemeMode) {
+        _state.update { it.copy(themeMode = mode) }
+        persist()
+    }
+
+    fun setAccent(accent: Accent) {
+        _state.update { it.copy(accent = accent) }
+        persist()
     }
 
     fun setKeepAwake(value: Boolean) {
         _state.update { it.copy(keepAwake = value) }
+        persist()
+    }
+
+    private fun persist() {
+        val s = _state.value
+        prefs.save(
+            AppSettings(
+                languageTag = s.languageTag,
+                themeMode = s.themeMode,
+                accent = s.accent,
+                keepAwake = s.keepAwake,
+            ),
+        )
     }
 
     private fun setError(error: AppError) {
