@@ -72,7 +72,7 @@ Optional: add a required reviewer on the `play` environment before production up
 Play requires a public privacy-policy URL.
 
 1. **Settings → Pages → Source: GitHub Actions**
-2. Run the **GitHub Pages** workflow, or push to `main`.
+2. Run the **GitHub Pages** workflow (Actions → GitHub Pages → Run workflow).
 3. Policy URL to paste in Play Console:
 
 `https://janisxyz.github.io/esp-flasher/privacy.html`
