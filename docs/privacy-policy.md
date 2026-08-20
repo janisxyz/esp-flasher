@@ -1,8 +1,13 @@
 # Privacy Policy for ESP Flasher
 
 **Effective date:** 20 August 2026  
-**Developer:** Leftclick AG  
-**Contact:** via [leftclick.ch](https://leftclick.ch)
+**App:** ESP Flasher  
+**Package:** `espflasher.shizoghost.com`  
+**Controller:** Leftclick AG, Binningerstrasse 95, CH-4123 Allschwil, Switzerland  
+**Contact:** [info@leftclick.ch](mailto:info@leftclick.ch) · [leftclick.ch](https://leftclick.ch)
+
+Canonical HTML: <https://janisxyz.github.io/esp-flasher/>  
+Deutsch: <https://janisxyz.github.io/esp-flasher/de/>
 
 ESP Flasher is a local utility. It writes firmware to ESP8266 and ESP32 boards from your phone over USB-OTG.
 
@@ -13,7 +18,7 @@ ESP Flasher does **not** collect, sell, share, or transmit personal data.
 - No accounts
 - No analytics or crash reporting SDKs
 - No advertising
-- No internet permission
+- No internet permission in the app
 
 ## Data that stays on the device
 
@@ -29,6 +34,10 @@ USB serial traffic stays between the phone and the board. Technical logs shown i
 - **Wake lock** is optional and only used to keep the screen on during a write.
 - Storage access is limited to the firmware file you pick through the system file picker or Share / Open with.
 
+## This policy page
+
+This page is hosted on GitHub Pages. Opening it may send technical data (IP address, user agent, referrer) to GitHub, Inc. We do not run our own analytics, ads, or cookies here. See the [GitHub Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
+
 ## Children
 
 The app is not directed at children and does not knowingly collect data from anyone.
@@ -40,3 +49,12 @@ If this policy changes, we will update this page and the date above.
 ## Not affiliated
 
 ESP Flasher is an independent tool. It is not affiliated with, endorsed by, or sponsored by Espressif Systems. ESP8266 and ESP32 are trademarks of their owners.
+
+## Contact
+
+Leftclick AG  
+Binningerstrasse 95  
+CH-4123 Allschwil  
+Switzerland  
+info@leftclick.ch  
+https://leftclick.ch

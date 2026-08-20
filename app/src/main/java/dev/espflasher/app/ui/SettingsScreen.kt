@@ -1,5 +1,7 @@
 package dev.espflasher.app.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,12 +14,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(vm: FlasherViewModel, onBack: () -> Unit) {
     val state by vm.state.collectAsState()
+    val context = LocalContext.current
     EspFlasherTheme(theme = state.theme, dynamicColor = true) {
         Scaffold(
             topBar = {
@@ -66,6 +70,15 @@ fun SettingsScreen(vm: FlasherViewModel, onBack: () -> Unit) {
                             Switch(checked = state.config.autoBootloader, onCheckedChange = { v -> vm.updateConfig { it.copy(autoBootloader = v) } })
                         }
                     }
+                }
+                TextButton(
+                    onClick = {
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://janisxyz.github.io/esp-flasher/")),
+                        )
+                    },
+                ) {
+                    Text("Privacy policy")
                 }
             }
         }
